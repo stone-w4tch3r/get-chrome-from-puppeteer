@@ -12,7 +12,7 @@
     }
   },
   "bin": {
-    "get-chrome-from-puppeteer": "./dist/cli.js"
+    "get-chrome-from-puppeteer": "dist/cli.js"
   },
   "files": [
     "dist"
