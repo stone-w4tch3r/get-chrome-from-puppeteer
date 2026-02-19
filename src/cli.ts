@@ -7,7 +7,7 @@ import path from "node:path";
 
 import { getChrome } from "./index.js";
 
-const HELP = `Usage: get-chrome-from-puppeteer [version] [options]
+const HELP = `Usage: [npx] get-chrome-from-puppeteer [version] [options]
 
 Arguments:
   version              Chrome version (default: "stable")
