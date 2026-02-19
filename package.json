@@ -1,0 +1,43 @@
+{
+  "name": "get-chrome-from-puppeteer",
+  "version": "1.0.0",
+  "description": "Install Chrome for Testing via @puppeteer/browsers and return its executable path",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "bin": {
+    "get-chrome-from-puppeteer": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "chrome",
+    "puppeteer",
+    "browser",
+    "testing",
+    "chrome-for-testing"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@puppeteer/browsers": "^2"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "typescript": "^5"
+  }
+}
