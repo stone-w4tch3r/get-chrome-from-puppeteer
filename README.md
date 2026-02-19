@@ -36,25 +36,25 @@ npx get-chrome-from-puppeteer --cache-dir /tmp/browsers
 
 ```bash
 # Use in scripts
-CHROME=$(npx get-chrome-from-puppeteer)
+CHROME=$(npx -y get-chrome-from-puppeteer)
 $CHROME --headless --dump-dom https://example.com
 ```
 
 ### Options
 
-| Option | Description |
-|---|---|
-| `[version]` | Chrome version: `stable` (default), `canary`, `beta`, `dev`, milestone (`130`), exact (`130.0.6723.58`) |
-| `--json` | Output as JSON `{ executablePath, buildId }` |
-| `--update` | Re-install if a newer build is available |
-| `--cache-dir <path>` | Custom cache directory |
-| `--help, -h` | Show help |
-| `--version, -v` | Show package version |
+| Option               | Description                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------- |
+| `[version]`          | Chrome version: `stable` (default), `canary`, `beta`, `dev`, milestone (`130`), exact (`130.0.6723.58`) |
+| `--json`             | Output as JSON `{ executablePath, buildId }`                                                            |
+| `--update`           | Re-install if a newer build is available                                                                |
+| `--cache-dir <path>` | Custom cache directory                                                                                  |
+| `--help, -h`         | Show help                                                                                               |
+| `--version, -v`      | Show package version                                                                                    |
 
 ### Environment variables
 
-| Variable | Description |
-|---|---|
+| Variable          | Description                          |
+| ----------------- | ------------------------------------ |
 | `GET_CHROME_PATH` | Skip install, use this path directly |
 
 ## Programmatic API
@@ -78,18 +78,18 @@ const result = await getChrome({
 
 #### Options
 
-| Option | Type | Default | Description |
-|---|---|---|---|
-| `version` | `string` | `"stable"` | Chrome version tag, milestone, or exact build ID |
-| `update` | `boolean` | `false` | Re-install if a newer build is available |
-| `cacheDir` | `string` | system default | Custom cache directory |
+| Option     | Type      | Default        | Description                                      |
+| ---------- | --------- | -------------- | ------------------------------------------------ |
+| `version`  | `string`  | `"stable"`     | Chrome version tag, milestone, or exact build ID |
+| `update`   | `boolean` | `false`        | Re-install if a newer build is available         |
+| `cacheDir` | `string`  | system default | Custom cache directory                           |
 
 #### Result
 
-| Field | Type | Description |
-|---|---|---|
-| `executablePath` | `string` | Absolute path to the Chrome executable |
-| `buildId` | `string` | Resolved build ID (e.g. `"130.0.6723.58"`) or `"custom"` if using `GET_CHROME_PATH` |
+| Field            | Type     | Description                                                                         |
+| ---------------- | -------- | ----------------------------------------------------------------------------------- |
+| `executablePath` | `string` | Absolute path to the Chrome executable                                              |
+| `buildId`        | `string` | Resolved build ID (e.g. `"130.0.6723.58"`) or `"custom"` if using `GET_CHROME_PATH` |
 
 ## License
 
