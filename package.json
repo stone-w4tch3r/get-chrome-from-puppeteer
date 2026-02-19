@@ -1,6 +1,6 @@
 {
   "name": "get-chrome-from-puppeteer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Install Chrome for Testing via @puppeteer/browsers and return its executable path",
   "type": "module",
   "main": "./dist/index.js",
