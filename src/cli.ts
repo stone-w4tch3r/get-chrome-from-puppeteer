@@ -10,14 +10,18 @@ import { getChrome } from "./index.js";
 const HELP = `Usage: [npx] get-chrome-from-puppeteer [version] [options]
 
 Arguments:
-  version              Chrome version (default: "stable")
-                       Examples: stable, canary, beta, 130, 130.0.6723.58
+  version              Chrome version (default: "stable", or "latest" with --chromium)
+                       Examples: stable, canary, beta, latest, 130, 130.0.6723.58
 
 Options:
   --json               Output as JSON { executablePath, buildId }
   --update             Re-install if newer build available
   --install-deps       Install system dependencies (Debian/Ubuntu, needs root)
   --cache-dir <path>   Custom cache directory
+  --base-url <url>     Custom download mirror URL
+  --quiet, -q          Suppress download progress output
+  --path-only          Only print path if installed, don't download
+  --chromium           Install Chromium instead of Chrome for Testing
   --help, -h           Show help
   --version, -v        Show package version
 
@@ -26,6 +30,10 @@ Environment:
   GET_CHROME_UPDATE        Set to "1" or "true" to re-install if newer
   GET_CHROME_INSTALL_DEPS  Set to "1" or "true" to install system deps
   GET_CHROME_CACHE_DIR     Custom cache directory
+  GET_CHROME_BASE_URL      Custom download mirror URL
+  GET_CHROME_QUIET         Set to "1" or "true" to suppress progress
+  GET_CHROME_PATH_ONLY     Set to "1" or "true" to skip download
+  GET_CHROME_CHROMIUM      Set to "1" or "true" to install Chromium
   GET_CHROME_JSON          Set to "1" or "true" for JSON output`;
 
 function getPackageVersion(): string {
@@ -48,6 +56,10 @@ async function main(): Promise<void> {
       update: { type: "boolean", default: false },
       "install-deps": { type: "boolean", default: false },
       "cache-dir": { type: "string" },
+      "base-url": { type: "string" },
+      quiet: { type: "boolean", default: false, short: "q" },
+      "path-only": { type: "boolean", default: false },
+      chromium: { type: "boolean", default: false },
       help: { type: "boolean", short: "h" },
       version: { type: "boolean", short: "v" },
     },
@@ -68,7 +80,7 @@ async function main(): Promise<void> {
     v === "1" || v === "true";
 
   const chromeVersion =
-    positionals[0] ?? process.env["GET_CHROME_VERSION"] ?? "stable";
+    positionals[0] ?? process.env["GET_CHROME_VERSION"];
 
   const result = await getChrome({
     version: chromeVersion,
@@ -76,6 +88,11 @@ async function main(): Promise<void> {
     installDeps:
       values["install-deps"] || envBool(process.env["GET_CHROME_INSTALL_DEPS"]),
     cacheDir: values["cache-dir"] ?? process.env["GET_CHROME_CACHE_DIR"],
+    baseUrl: values["base-url"] ?? process.env["GET_CHROME_BASE_URL"],
+    quiet: values.quiet || envBool(process.env["GET_CHROME_QUIET"]),
+    pathOnly:
+      values["path-only"] || envBool(process.env["GET_CHROME_PATH_ONLY"]),
+    chromium: values.chromium || envBool(process.env["GET_CHROME_CHROMIUM"]),
   });
 
   if (values.json || envBool(process.env["GET_CHROME_JSON"])) {

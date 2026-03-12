@@ -33,6 +33,18 @@ npx get-chrome-from-puppeteer --install-deps
 
 # Custom cache directory
 npx get-chrome-from-puppeteer --cache-dir /tmp/browsers
+
+# Custom download mirror
+npx get-chrome-from-puppeteer --base-url https://my-mirror.example.com
+
+# Quiet mode (no progress bar)
+npx get-chrome-from-puppeteer -q
+
+# Only print path if already installed (no download)
+npx get-chrome-from-puppeteer --path-only
+
+# Install Chromium instead of Chrome for Testing
+npx get-chrome-from-puppeteer --chromium
 ```
 
 ### Shell integration
@@ -52,6 +64,10 @@ $CHROME --headless --dump-dom https://example.com
 | `--update`           | Re-install if a newer build is available                                                                |
 | `--install-deps`     | Install system dependencies (Debian/Ubuntu, requires root)                                              |
 | `--cache-dir <path>` | Custom cache directory                                                                                  |
+| `--base-url <url>`   | Custom download mirror URL                                                                              |
+| `--quiet, -q`        | Suppress download progress output                                                                       |
+| `--path-only`        | Only print path if installed, don't download                                                            |
+| `--chromium`         | Install Chromium instead of Chrome for Testing                                                          |
 | `--help, -h`         | Show help                                                                                               |
 | `--version, -v`      | Show package version                                                                                    |
 
@@ -63,6 +79,10 @@ $CHROME --headless --dump-dom https://example.com
 | `GET_CHROME_UPDATE`      | Set to `1` or `true` to re-install if newer          |
 | `GET_CHROME_INSTALL_DEPS`| Set to `1` or `true` to install system deps          |
 | `GET_CHROME_CACHE_DIR`   | Custom cache directory                               |
+| `GET_CHROME_BASE_URL`    | Custom download mirror URL                           |
+| `GET_CHROME_QUIET`       | Set to `1` or `true` to suppress progress            |
+| `GET_CHROME_PATH_ONLY`   | Set to `1` or `true` to skip download                |
+| `GET_CHROME_CHROMIUM`    | Set to `1` or `true` to install Chromium             |
 | `GET_CHROME_JSON`        | Set to `1` or `true` for JSON output                 |
 
 ## Programmatic API
@@ -89,10 +109,14 @@ const result = await getChrome({
 
 | Option     | Type      | Default        | Description                                      |
 | ---------- | --------- | -------------- | ------------------------------------------------ |
-| `version`  | `string`  | `"stable"`     | Chrome version tag, milestone, or exact build ID |
+| `version`     | `string`  | `"stable"`     | Chrome version tag, milestone, or exact build ID                  |
 | `update`      | `boolean` | `false`        | Re-install if a newer build is available                          |
 | `installDeps` | `boolean` | `false`        | Install system dependencies (Debian/Ubuntu, requires root)        |
 | `cacheDir`    | `string`  | system default | Custom cache directory                                            |
+| `baseUrl`     | `string`  | Google's CDN   | Custom download mirror URL                                        |
+| `quiet`       | `boolean` | `false`        | Suppress download progress output                                 |
+| `pathOnly`    | `boolean` | `false`        | Only return path if installed, don't download                     |
+| `chromium`    | `boolean` | `false`        | Install Chromium instead of Chrome for Testing                    |
 
 #### Result
 

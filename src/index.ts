@@ -20,6 +20,14 @@ export interface GetChromeOptions {
   cacheDir?: string;
   /** Install system-level dependencies (Debian/Ubuntu only, requires root). Default: false */
   installDeps?: boolean;
+  /** Custom download base URL (e.g. corporate mirror). Default: Google's CDN */
+  baseUrl?: string;
+  /** Suppress download progress output. Default: false */
+  quiet?: boolean;
+  /** Only return path if already installed, don't download. Default: false */
+  pathOnly?: boolean;
+  /** Install Chromium instead of Chrome for Testing. Default: false */
+  chromium?: boolean;
 }
 
 export interface GetChromeResult {
@@ -49,7 +57,10 @@ function getDefaultCacheDir(): string {
 export async function getChrome(
   options?: GetChromeOptions,
 ): Promise<GetChromeResult> {
-  const version = options?.version ?? "stable";
+  const isChromium = options?.chromium ?? false;
+  const browser = isChromium ? Browser.CHROMIUM : Browser.CHROME;
+  const defaultVersion = isChromium ? "latest" : "stable";
+  const version = options?.version ?? defaultVersion;
   const update = options?.update ?? false;
   const cacheDir = options?.cacheDir ?? getDefaultCacheDir();
 
@@ -58,27 +69,34 @@ export async function getChrome(
     throw new Error("Unable to detect browser platform");
   }
 
-  const buildId = await resolveBuildId(Browser.CHROME, platform, version);
+  const buildId = await resolveBuildId(browser, platform, version);
 
-  // If not updating, check if already installed
-  if (!update) {
-    const installed = await getInstalledBrowsers({ cacheDir });
-    const existing = installed.find(
-      (b) => b.browser === Browser.CHROME && b.buildId === buildId,
-    );
+  // Check if already installed
+  const installed = await getInstalledBrowsers({ cacheDir });
+  const existing = installed.find(
+    (b) => b.browser === browser && b.buildId === buildId,
+  );
+
+  if (existing && !update) {
+    return { executablePath: existing.executablePath, buildId };
+  }
+
+  if (options?.pathOnly) {
     if (existing) {
       return { executablePath: existing.executablePath, buildId };
     }
+    throw new Error(`Chrome ${buildId} is not installed (use without --path-only to download)`);
   }
 
   // Install (idempotent — skips download if already present)
-  const installDeps = options?.installDeps ?? false;
   const result = await install({
-    browser: Browser.CHROME,
+    browser,
     buildId,
     cacheDir,
-    downloadProgressCallback: "default",
-    installDeps,
+    unpack: true as const,
+    installDeps: options?.installDeps ?? false,
+    ...(!options?.quiet && { downloadProgressCallback: "default" as const }),
+    ...(options?.baseUrl && { baseUrl: options.baseUrl }),
   });
 
   return { executablePath: result.executablePath, buildId };
