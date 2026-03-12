@@ -59,7 +59,6 @@ $CHROME --headless --dump-dom https://example.com
 
 | Variable                 | Description                                          |
 | ------------------------ | ---------------------------------------------------- |
-| `GET_CHROME_PATH`        | Skip install, use this path directly                 |
 | `GET_CHROME_VERSION`     | Chrome version (same as positional arg)              |
 | `GET_CHROME_UPDATE`      | Set to `1` or `true` to re-install if newer          |
 | `GET_CHROME_INSTALL_DEPS`| Set to `1` or `true` to install system deps          |
@@ -100,7 +99,7 @@ const result = await getChrome({
 | Field            | Type     | Description                                                                         |
 | ---------------- | -------- | ----------------------------------------------------------------------------------- |
 | `executablePath` | `string` | Absolute path to the Chrome executable                                              |
-| `buildId`        | `string` | Resolved build ID (e.g. `"130.0.6723.58"`) or `"custom"` if using `GET_CHROME_PATH` |
+| `buildId`        | `string` | Resolved build ID (e.g. `"130.0.6723.58"`)                                          |
 
 ## License
 

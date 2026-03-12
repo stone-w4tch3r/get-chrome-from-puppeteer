@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
@@ -50,12 +49,6 @@ function getDefaultCacheDir(): string {
 export async function getChrome(
   options?: GetChromeOptions,
 ): Promise<GetChromeResult> {
-  // Check GET_CHROME_PATH env var override
-  const envPath = process.env["GET_CHROME_PATH"];
-  if (envPath && fs.existsSync(envPath)) {
-    return { executablePath: envPath, buildId: "custom" };
-  }
-
   const version = options?.version ?? "stable";
   const update = options?.update ?? false;
   const cacheDir = options?.cacheDir ?? getDefaultCacheDir();
