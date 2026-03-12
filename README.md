@@ -28,6 +28,9 @@ npx get-chrome-from-puppeteer --json
 # Re-install if newer build available
 npx get-chrome-from-puppeteer --update
 
+# Install system dependencies (Debian/Ubuntu, requires root)
+npx get-chrome-from-puppeteer --install-deps
+
 # Custom cache directory
 npx get-chrome-from-puppeteer --cache-dir /tmp/browsers
 ```
@@ -47,6 +50,7 @@ $CHROME --headless --dump-dom https://example.com
 | `[version]`          | Chrome version: `stable` (default), `canary`, `beta`, `dev`, milestone (`130`), exact (`130.0.6723.58`) |
 | `--json`             | Output as JSON `{ executablePath, buildId }`                                                            |
 | `--update`           | Re-install if a newer build is available                                                                |
+| `--install-deps`     | Install system dependencies (Debian/Ubuntu, requires root)                                              |
 | `--cache-dir <path>` | Custom cache directory                                                                                  |
 | `--help, -h`         | Show help                                                                                               |
 | `--version, -v`      | Show package version                                                                                    |
@@ -70,6 +74,7 @@ console.log(executablePath);
 const result = await getChrome({
   version: "canary",
   update: true,
+  installDeps: true,
   cacheDir: "/tmp/browsers",
 });
 ```
@@ -81,8 +86,9 @@ const result = await getChrome({
 | Option     | Type      | Default        | Description                                      |
 | ---------- | --------- | -------------- | ------------------------------------------------ |
 | `version`  | `string`  | `"stable"`     | Chrome version tag, milestone, or exact build ID |
-| `update`   | `boolean` | `false`        | Re-install if a newer build is available         |
-| `cacheDir` | `string`  | system default | Custom cache directory                           |
+| `update`      | `boolean` | `false`        | Re-install if a newer build is available                          |
+| `installDeps` | `boolean` | `false`        | Install system dependencies (Debian/Ubuntu, requires root)        |
+| `cacheDir`    | `string`  | system default | Custom cache directory                                            |
 
 #### Result
 

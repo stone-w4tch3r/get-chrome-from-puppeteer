@@ -16,6 +16,7 @@ Arguments:
 Options:
   --json               Output as JSON { executablePath, buildId }
   --update             Re-install if newer build available
+  --install-deps       Install system dependencies (Debian/Ubuntu, needs root)
   --cache-dir <path>   Custom cache directory
   --help, -h           Show help
   --version, -v        Show package version
@@ -41,6 +42,7 @@ async function main(): Promise<void> {
     options: {
       json: { type: "boolean", default: false },
       update: { type: "boolean", default: false },
+      "install-deps": { type: "boolean", default: false },
       "cache-dir": { type: "string" },
       help: { type: "boolean", short: "h" },
       version: { type: "boolean", short: "v" },
@@ -63,6 +65,7 @@ async function main(): Promise<void> {
   const result = await getChrome({
     version: chromeVersion,
     update: values.update,
+    installDeps: values["install-deps"],
     cacheDir: values["cache-dir"],
   });
 

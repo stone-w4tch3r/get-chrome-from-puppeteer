@@ -19,6 +19,8 @@ export interface GetChromeOptions {
   update?: boolean;
   /** Custom cache directory. Default: system-appropriate cache dir */
   cacheDir?: string;
+  /** Install system-level dependencies (Debian/Ubuntu only, requires root). Default: false */
+  installDeps?: boolean;
 }
 
 export interface GetChromeResult {
@@ -77,11 +79,13 @@ export async function getChrome(
   }
 
   // Install (idempotent — skips download if already present)
+  const installDeps = options?.installDeps ?? false;
   const result = await install({
     browser: Browser.CHROME,
     buildId,
     cacheDir,
     downloadProgressCallback: "default",
+    installDeps,
   });
 
   return { executablePath: result.executablePath, buildId };
