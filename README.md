@@ -57,9 +57,14 @@ $CHROME --headless --dump-dom https://example.com
 
 ### Environment variables
 
-| Variable          | Description                          |
-| ----------------- | ------------------------------------ |
-| `GET_CHROME_PATH` | Skip install, use this path directly |
+| Variable                 | Description                                          |
+| ------------------------ | ---------------------------------------------------- |
+| `GET_CHROME_PATH`        | Skip install, use this path directly                 |
+| `GET_CHROME_VERSION`     | Chrome version (same as positional arg)              |
+| `GET_CHROME_UPDATE`      | Set to `1` or `true` to re-install if newer          |
+| `GET_CHROME_INSTALL_DEPS`| Set to `1` or `true` to install system deps          |
+| `GET_CHROME_CACHE_DIR`   | Custom cache directory                               |
+| `GET_CHROME_JSON`        | Set to `1` or `true` for JSON output                 |
 
 ## Programmatic API
 

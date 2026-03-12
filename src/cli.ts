@@ -22,7 +22,12 @@ Options:
   --version, -v        Show package version
 
 Environment:
-  GET_CHROME_PATH      Skip install, use this path directly`;
+  GET_CHROME_PATH          Skip install, use this path directly
+  GET_CHROME_VERSION       Chrome version (same as positional arg)
+  GET_CHROME_UPDATE        Set to "1" or "true" to re-install if newer
+  GET_CHROME_INSTALL_DEPS  Set to "1" or "true" to install system deps
+  GET_CHROME_CACHE_DIR     Custom cache directory
+  GET_CHROME_JSON          Set to "1" or "true" for JSON output`;
 
 function getPackageVersion(): string {
   const pkgPath = path.resolve(
@@ -60,16 +65,21 @@ async function main(): Promise<void> {
     return;
   }
 
-  const chromeVersion = positionals[0] ?? "stable";
+  const envBool = (v: string | undefined): boolean =>
+    v === "1" || v === "true";
+
+  const chromeVersion =
+    positionals[0] ?? process.env["GET_CHROME_VERSION"] ?? "stable";
 
   const result = await getChrome({
     version: chromeVersion,
-    update: values.update,
-    installDeps: values["install-deps"],
-    cacheDir: values["cache-dir"],
+    update: values.update || envBool(process.env["GET_CHROME_UPDATE"]),
+    installDeps:
+      values["install-deps"] || envBool(process.env["GET_CHROME_INSTALL_DEPS"]),
+    cacheDir: values["cache-dir"] ?? process.env["GET_CHROME_CACHE_DIR"],
   });
 
-  if (values.json) {
+  if (values.json || envBool(process.env["GET_CHROME_JSON"])) {
     console.log(JSON.stringify(result, null, 2));
   } else {
     console.log(result.executablePath);
